@@ -18,7 +18,7 @@ func postAlbum(c *gin.Context) {
 
 	// Calling BindJSON to bind the received JSON to newAlbum
 	if err := c.BindJSON(&newAlbum); err != nil {
-		return
+		c.JSON(http.StatusBadRequest, "Bad request")
 	}
 
 	// Adding new album to the slice
@@ -32,14 +32,12 @@ func getAlbumById(c *gin.Context) {
 	id := c.Param("id")
 
 	// Loop over the list of albums, looking for an album whose ID matches the param
-	for _, a := range albums {
-		if a.ID == id {
-			c.IndentedJSON(http.StatusOK, a)
+	for _, album := range albums {
+		if album.ID == id {
+			c.IndentedJSON(http.StatusOK, album)
 			return
 		}
 	}
 
-	message := fmt.Sprintf("album %s not found", id)
-
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": message})
+	c.IndentedJSON(http.StatusNotFound, gin.H{"message": fmt.Sprintf("album %s not found", id)})
 }
