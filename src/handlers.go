@@ -19,6 +19,7 @@ func postAlbum(c *gin.Context) {
 	// Calling BindJSON to bind the received JSON to newAlbum
 	if err := c.BindJSON(&newAlbum); err != nil {
 		c.JSON(http.StatusBadRequest, "Bad request")
+		return
 	}
 
 	// Adding new album to the slice
